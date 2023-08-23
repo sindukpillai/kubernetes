@@ -1,0 +1,143 @@
+#Roadmap to Deploy application to kubernetes cluster (with assumption that webapplication is deployed and artifacts are loaded in github)
+
+#create cluster
+kops create cluster --name=vprokube.groophy.in --state=s3://vprofile-kops-state --zones=us-east-1c --node-count=2 --node-size=t3.small --master-size=t3.medium --dns-zone=vprokube.groophy.in  --node-size=8
+#git hub create public repository with name kube-app
+#cline the source code with IntelliJIDE
+ooen intelliJIDE
+give url = https://github.com/imranvisual/path/path/kube-app.git
+clone the source code
+
+Take IntelliJIDE
+settings
+Install kunernetes plugin
+ok
+
+#Check health of cluster created
+kops validate cluster --name vprokube.groophy.in --state=s3.//vprofile-kops-state  --yes
+
+#create EBS volume
+aws ec2 create volume availability-zone=us-east-1c  --size=3  --volume-type=gp2
+{
+"AvailabilityZone":"us-east-1c",
+"CreateTime":"2023-10-112132",
+"Encrypted":false,
+"Size":3,
+"SnapShotId":"",
+"State":"Creating",
+"VolumeId":"vol-obcsdfdfdfdf",
+"Loops":100,
+"Tags":[],
+"VolumeType":"gp2"
+}
+#Display nodes created with labels
+kubectl get nodes --show  --labels
+
+#Create my own labels
+kubectl get nodes
+kubectl describe node "nodelabel" | grep us-east-1c
+
+#Give new label name for nodes
+kubectl label nodes ip-172.20.12.56.computer.internal zone=us-east-1c
+kubectl label nodes ip-172.20.49.20.computer.internal zone=us-east-2b
+
+#Docker image file for vprofile app 
+FROM Tomcat:8.jre//
+LABEL "Project"="Vprofile"
+LABEL "Author"="Sindhu"
+RUN rm -rf /usr/local/tomcat/webapp/*
+COPY target/vprofile-v2.war /usr/local/tomcat/webapp/ROOT.war
+EXPOSE 8080
+CMD ["Catalina.sh","run"]
+WORKDIR /usr/local/tomcat/
+VOLUME /usr/local/tomcat/webapp3
+#backend service file creation
+#JDBC Config
+jdbcdriverclassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc://vprofiledb:3306/accounts?userunicode=true & char--
+jdbc.username=root
+jdbc.password=vprodbpass
+#Memcache config
+memcached.active-host=vprodbpass
+memcached.active.port=11211
+memcached.standBy.host=vprocache01
+memcached.standBy.port=11211
+#Rabbitmq config
+rabbitmq.address=vpromq01
+rabbitmq.port=15672
+rabbitmq.username=guest
+rabbitmq.password=guest
+#elastic search config
+elasticsearch.host=vprosearch01
+elasticsearch.port=9300
+
+#gitbash
+echo -n "prodbpass" |base64  #create secret key value for "prodbpass"
+dbZyricfpzcq
+echo -n "guest" | base64  #create secret key calue for "guest"
+Zzxcvbd
+
+
+#appsecret.yml
+apiVersion:v1
+kind:Secret
+metadata:
+   name:app-secret
+type:Opaque
+data:
+   db_pass: dbZyricfpzcq
+   rmq_pass: Zzxcvbd
+
+#clone kube-app.git
+git cli ne https://github.com/imranvisual/path/kube-app.git
+
+cat app-secret.yml
+
+#create secret file for security
+
+kube.ctl create -f app-secret.yml
+kubectl get secret
+kubectl describe secret
+#DB definition files
+
+#kubectl get nodes --show-labels
+#Create volume and map 
+git pull  ->vprodbdep.yaml
+kubectl create -f vprodbdep.yaml
+kubectl get deploy
+kubectl get pod
+kubectl describe pod vprodb66bb9c88tf-svcbt
+
+#create service file db_CIP.yaml
+
+#create memcachedep.yaml
+
+#create rabitmq rmq-dep.yaml
+
+#create tomcat dep vproappdep.yaml
+
+#create load balancer for webapp in aws console
+
+#clone all files 
+app-secret.yaml db_CIP.yaml vprodbdep.yaml memcachedep.yaml rmq-dep.yaml vproappdep.yaml
+git pull
+kubectl createn-f . (all files)
+kubectl get deploy
+kubectl get pod
+kubectl get svc (service)
+#take loadbalancer endpoint and paste it in a browser and which will lead to app home page
+
+#Url
+#create rout53 new record from aws console for domain mgmt
+#create new simple record 
+#give name of app vproapp.groophy.com (name given in cluster) and run in browser
+
+
+
+
+
+
+
+
+
+
